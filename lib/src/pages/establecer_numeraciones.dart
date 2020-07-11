@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 
 class EstablecerNumeraciones extends StatefulWidget {
   EstablecerNumeraciones({Key key}) : super(key: key);
-
   @override
   _EstablecerNumeracionesState createState() => _EstablecerNumeracionesState();
 }
 
 class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   int indexes = 0; // Total pistolas despues de init. (Se establece acorde ala iteracion del for que crea los inputs).
-  var _iconInput = Icons.line_style;
-  var _colorInput = Colors.grey;
   Map<int, FocusNode> _inputFocus = {}; // Focus del TextField.
   Map<int, TextEditingController> _inputControllers = {};  // COntrolador del texto del TextField.
+  Map<int, IconData> _inputIcon = {}; // Icono de cada input.
+  Map<int, MaterialColor> _inputColor = {}; // Icono de cada input.
 
   @override
   void initState() {
     _makeMappers(5); // Creamos los Focus y los controllers.
     super.initState();
   }
+
   @override
   void dispose() {
     /// Barremos los [_inputControllers] & [_inputFocus] y hacemos el dispose de cada uno.
@@ -30,13 +30,17 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
     indexes = 0 ;
     super.dispose();
   }
+
   void _makeMappers(int pistolas){
     /// Creamos los focus y los controllers acorde el numero de pistolas recibido[pistolas].
     for(int i = 0; i < pistolas; i++){
-      _inputFocus.addAll({i: FocusNode()});
-      _inputControllers.addAll({i: TextEditingController()});
+      _inputFocus.addAll({i: FocusNode()}); // Focus independiente en cada input.
+      _inputControllers.addAll({i: TextEditingController()}); // Controller independiente de cada input.
+      _inputIcon.addAll({i: Icons.line_style}); // Icon independiente de cada input.
+      _inputColor.addAll({i: Colors.grey});
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final DataExporter args = ModalRoute.of(context).settings.arguments; // Obtenemos el numero de pistolas enviado desde seleccionar bomba.
@@ -51,6 +55,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
       body: _generarFields(args.pistolas), // Enviamos a generarFields las pistolas de la bomba seleccionada.
     );
   }
+
   Widget _alerta(){
     // Alerta en error de un input.
     return AlertDialog(
@@ -86,11 +91,11 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   void changeIcon(int inputIndex){
     // Evalua el texto del controlador del input.
     if(_isNumeric(_inputControllers[inputIndex].text) && _inputControllers[inputIndex].text.contains('.')){
-      _iconInput = Icons.check_circle;
-      _colorInput = Colors.green;
+      _inputIcon[inputIndex] = Icons.check_circle;
+      _inputColor[inputIndex] = Colors.green;
     }else{
-      _iconInput = Icons.cancel;
-      _colorInput = Colors.red;
+      _inputIcon[inputIndex] = Icons.cancel;
+      _inputColor[inputIndex] = Colors.red;
       showDialog(
         barrierDismissible: false,
         context: context,
@@ -98,6 +103,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
       );
     }
   }
+
     Widget _generarFields(int pistolas) {
     /// [tempList] guardara un input por cada pistola de la bomba seleccionada.
     List<Widget> tempList = [];
@@ -174,7 +180,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Inserte aqui numeracion',
-          suffixIcon: Icon(_iconInput, color: _colorInput),
+          suffixIcon: Icon(_inputIcon[inputIndex], color: _inputColor[inputIndex]),
           icon: Icon(Icons.format_list_numbered, size: 20.0),
           helperText: 'Inserte acorde hoja de corte.',
           counter: Text('')
@@ -185,12 +191,11 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
         focusNode: _inputFocus[inputIndex],
         onEditingComplete: (){
           setState(() {
-            changeIcon(inputIndex);
-            _inputFocus[inputIndex+1].requestFocus();
+            changeIcon(inputIndex); // Validamos los datos introducidos.
+            _inputFocus[inputIndex+1].requestFocus(); // Hacemosfocus al Focus con el index +1 para seleccionar el siguiente.
           });
         },
       ),
     );
   }
-
 }
