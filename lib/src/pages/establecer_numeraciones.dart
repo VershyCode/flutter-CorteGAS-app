@@ -10,9 +10,9 @@ class EstablecerNumeraciones extends StatefulWidget {
 class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   int indexes = 0; // Total pistolas despues de init. (Se establece acorde ala iteracion del for que crea los inputs).
   Map<int, FocusNode> _inputFocus = {}; // Focus del TextField.
-  Map<int, TextEditingController> _inputControllers = {};  // COntrolador del texto del TextField.
+  Map<int, TextEditingController> _inputControllers = {};  // Controlador del texto del TextField.
   Map<int, IconData> _inputIcon = {}; // Icono de cada input.
-  Map<int, MaterialColor> _inputColor = {}; // Icono de cada input.
+  Map<int, MaterialColor> _inputColor = {}; // Color de cada input.
 
   @override
   void initState() {
