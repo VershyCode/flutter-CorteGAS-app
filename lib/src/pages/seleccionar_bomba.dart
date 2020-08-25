@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class DataExporter{
   int pistolas;
-  DataExporter(this.pistolas);
+  List<dynamic> types;
+  DataExporter(this.pistolas, this.types);
 }
 class SeleccionarBomba extends StatelessWidget {
   @override
@@ -83,6 +84,7 @@ class SeleccionarBomba extends StatelessWidget {
     int i = 0;
     data.forEach((e) {
       final int pistolas = e['bomba${i+1}']['pistolas'];
+      List<dynamic> types = e['bomba${i+1}']['tipos'];
       tempList.add(
         Card(
           elevation: 20.0,
@@ -93,7 +95,7 @@ class SeleccionarBomba extends StatelessWidget {
             trailing: Icon(Icons.mode_edit, size: 30.0, color: Colors.blueGrey),
             contentPadding: EdgeInsets.all(20.0),
             onTap: (){
-              Navigator.pushNamed(context, 'establecer_numeraciones', arguments: DataExporter(pistolas));
+              Navigator.pushNamed(context, 'establecer_numeraciones', arguments: DataExporter(pistolas, types));
             },
           ),
         )
