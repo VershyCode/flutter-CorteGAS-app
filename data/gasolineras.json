@@ -15,7 +15,7 @@
                     "bomba2": {
                         "pistolas": 4,
                         "descripcion": "Este dispensario cuenta con Magna y Premium.",
-                        "tipos": ["Premium", "Magna"]
+                        "tipos": ["Magna", "Premium"]
                     }
                 }
             ]

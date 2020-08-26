@@ -14,6 +14,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   Map<int, IconData> _inputIcon = {}; // Icono de cada input.
   Map<int, MaterialColor> _inputColor = {}; // Color de cada input.
   Map<int, String> _inputType = {};
+  bool selected = false;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
       _inputFocus[i].dispose();
     }
     indexes = 0 ;
+    selected = false;
     super.dispose();
   }
 
@@ -57,30 +59,6 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
     );
   }
 
-  Widget _alerta(){
-    // Alerta en error de un input.
-    return AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-      title: Text('Que paso mi despachador? !'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(Icons.warning, size: 50.0),
-          SizedBox(height: 20.0),
-          Text('Asegurate de solo introducir numeros y puntos decimales para poder realizar los calculos.'),
-        ],
-      ),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: (){
-            Navigator.of(context).pop();
-          },
-          child: Text('Ok'),
-        )
-      ],
-    );
-  }
-
    bool _isNumeric(String str) {
     // Evalua si el str es numerico.
     if(str == null) {
@@ -97,11 +75,6 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
     }else{
       _inputIcon[inputIndex] = Icons.cancel;
       _inputColor[inputIndex] = Colors.red;
-      // showDialog(
-      //   barrierDismissible: false,
-      //   context: context,
-      //   child: _alerta(),
-      // );
     }
   }
 
@@ -167,21 +140,22 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   }
 
   Widget _inputNumeral(int inputIndex, List<dynamic> types){
-    print(types);
-    // TODO: TIPO DE PISTOLA PERSONALIZADO PARA CADA TEXTFIELD
     /// El input es un container que tiene como child un [TextField].
     /// aqui recibimos el [inputIndex] que viene siendo el iterador del for (cuantas pistolas son).
     indexes = inputIndex;
-    if(types != null){
+    if(types != null){ // Si types esta cargado con los tipos de pistolas.
       setState(() {
-          print(inputIndex);
-        if(inputIndex % 2 == 0){
-           _inputType.addAll({inputIndex: types[0]});
-        }else{
-          if(inputIndex > 3){
-           _inputType.addAll({inputIndex: types[2]});
+        ////
+        /// [selected] va a manejar si ya fue seleccionada la magna o la premium donde true = prem y false = magna.
+        /// 
+        /// De primera selected sera false por lo tanto se seleccionara magna y se implementara al field.
+        if(types.length < 3){ // Es de 2 pistolas?
+          if(selected){
+            _inputType.addAll({inputIndex: types[1]}); // Premium.
+            selected = false; // Proxima iteracion se selecciona magna.
           }else{
-           _inputType.addAll({inputIndex: types[1]});
+            _inputType.addAll({inputIndex: types[0]}); // Magna.
+            selected = true; // Proxima iteracion se selecciona premium.
           }
         }
       });

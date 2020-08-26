@@ -1,4 +1,5 @@
 import 'package:corte_gas/src/pages/seleccionar_bomba.dart';
+import 'package:corte_gas/src/utils/dialog_util.dart';
 import 'package:flutter/material.dart';
 
 class EstablecerNumeraciones extends StatefulWidget {
@@ -14,11 +15,14 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
   Map<int, IconData> _inputIcon = {}; // Icono de cada input.
   Map<int, MaterialColor> _inputColor = {}; // Color de cada input.
   Map<int, String> _inputType = {};
+  Map<int, double> numeracionesDeEntrada = {};
+  Map<int, double> numeracionesDeSalida = {};
   bool selected = false;
+  String pageTitle = 'Numeraciones de Entrada';
 
   @override
   void initState() {
-    _makeMappers(5); // Creamos los Focus y los controllers.
+    _makeMappers(4); // Creamos los Focus y los controllers.
     super.initState();
   }
 
@@ -52,7 +56,7 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
       appBar: AppBar(
         elevation: 10.0,
         leading: Icon(Icons.touch_app, size: 40.0),
-        title: Text('Numeraciones de entrada'),
+        title: Text(pageTitle),
         backgroundColor: Colors.teal,
       ),
       body: _generarFields(args.pistolas, args.types), // Enviamos a generarFields las pistolas de la bomba seleccionada.
@@ -78,7 +82,22 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
     }
   }
 
-    Widget _generarFields(int pistolas, List<dynamic> types) {
+  bool isFieldOnError(){
+    bool error = false;
+    for(int i = 0; i < _inputControllers.length; i++){
+      if(_inputControllers[i].text == '' || !_isNumeric(_inputControllers[i].text)){
+        ///
+        /// Si el inputController esta vacio o no es numerico entonces retornamos que si esta en un error.
+        ///
+        error = true;
+        _inputFocus[i].requestFocus();
+        break;
+      }
+    }
+    return error;
+  }
+
+  Widget _generarFields(int pistolas, List<dynamic> types) {
     /// [tempList] guardara un input por cada pistola de la bomba seleccionada.
     List<Widget> tempList = [];
     for(int i = 0; i < pistolas; i++){
@@ -117,10 +136,33 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
           Expanded(
             child: Container(
               margin: EdgeInsets.only(bottom: 10.0, top: 5.0, right: 20.0, left: 20.0),
+              // Boton al final de las numeraciones.
               child: FlatButton(
                 padding: EdgeInsets.all(10.0),
                 color: Colors.white,
-                onPressed: (){},
+                onPressed: (){
+                  if(isFieldOnError()){ // Alguna textbox tiene error?
+                    numeracionesIncorrectasAlert(context);
+                  }else{
+                    numeracionesCorrectasAlert(context);
+                    ///
+                    /// Si las numeraciones son aceptables entonces
+                    /// Guardamos las numeraciones de entrada y limpiamos los textfield.
+                    /// A continuacion pediremos las de salida.
+                    ///
+                    if(pageTitle == 'Numeraciones de salida'){
+                    }else{
+                      for(int i = 0; i < _inputControllers.length; i++){
+                        numeracionesDeEntrada.addAll({i: double.parse(_inputControllers[i].text)});
+                        setState(() {
+                          _inputControllers[i].text = '';
+                          pageTitle = 'Numeraciones de salida';
+                          _inputFocus[0].requestFocus();
+                        });
+                      }
+                    }
+                  }
+                },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
