@@ -1,0 +1,18 @@
+"ruta": "gas_arco",
+"descripcion": "Estacion situada al inicio del bulevard principal en sinaloa de leyva. ",
+"nombre_gasolinera": "Gasolinera arco",
+"info_bombas": [{
+        "bomba1": {
+            "pistolas": 6,
+            "descripcion": "Este dispensario cuenta con Magna, Premium y Diesel.",
+            "tipos": ["Magna", "Premium", "Diesel"]
+        }
+    },
+    {
+        "bomba2": {
+            "pistolas": 4,
+            "descripcion": "Este dispensario cuenta con Magna y Premium.",
+            "tipos": ["Magna", "Premium"]
+        }
+    }
+]

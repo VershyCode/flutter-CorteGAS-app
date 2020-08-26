@@ -144,14 +144,19 @@ class _EstablecerNumeracionesState extends State<EstablecerNumeraciones> {
                   if(isFieldOnError()){ // Alguna textbox tiene error?
                     numeracionesIncorrectasAlert(context);
                   }else{
-                    numeracionesCorrectasAlert(context);
                     ///
                     /// Si las numeraciones son aceptables entonces
                     /// Guardamos las numeraciones de entrada y limpiamos los textfield.
                     /// A continuacion pediremos las de salida.
                     ///
                     if(pageTitle == 'Numeraciones de salida'){
+                      print('==================================  FINALIZO  ===================================================== ');
+                      for(int i = 0; i < _inputControllers.length; i++){
+                        numeracionesDeSalida.addAll({i: double.parse(_inputControllers[i].text)});
+                      }
+                      corteExitosoAlert(context);
                     }else{
+                      numeracionesCorrectasAlert(context);
                       for(int i = 0; i < _inputControllers.length; i++){
                         numeracionesDeEntrada.addAll({i: double.parse(_inputControllers[i].text)});
                         setState(() {

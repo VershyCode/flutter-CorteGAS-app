@@ -1,45 +1,24 @@
 {
     "nombreApp": "corteGAS",
     "gasolineras": [{
-            "ruta": "gas_arco",
-            "descripcion": "Estacion situada al inicio del bulevard principal en sinaloa de leyva. ",
-            "nombre_gasolinera": "Gasolinera arco",
-            "info_bombas": [{
-                    "bomba1": {
-                        "pistolas": 6,
-                        "descripcion": "Este dispensario cuenta con Magna, Premium y Diesel.",
-                        "tipos": ["Magna", "Premium", "Diesel"]
-                    }
-                },
-                {
-                    "bomba2": {
-                        "pistolas": 4,
-                        "descripcion": "Este dispensario cuenta con Magna y Premium.",
-                        "tipos": ["Magna", "Premium"]
-                    }
+        "ruta": "gas_rio",
+        "descripcion": "Estacion situada en el entronque a sinaloa de leyva, carretera bamoa - bacurato.",
+        "nombre_gasolinera": "Gasolinera rio",
+        "bombas": 2,
+        "info_bombas": [{
+                "bomba1": {
+                    "pistolas": 4,
+                    "descripcion": "Este dispensario cuenta con Magna y Premium.",
+                    "tipos": ["magna", "premium"]
                 }
-            ]
-        },
-        {
-            "ruta": "gas_rio",
-            "descripcion": "Estacion situada en el entronque a sinaloa de leyva, carretera bamoa - bacurato.",
-            "nombre_gasolinera": "Gasolinera rio",
-            "bombas": 2,
-            "info_bombas": [{
-                    "bomba1": {
-                        "pistolas": 4,
-                        "descripcion": "Este dispensario cuenta con Magna y Premium.",
-                        "tipos": ["magna", "premium"]
-                    }
-                },
-                {
-                    "bomba2": {
-                        "pistolas": 4,
-                        "descripcion": "Este dispensario cuenta con Magna y Diesel.",
-                        "tipos": ["magna", "premium"]
-                    }
+            },
+            {
+                "bomba2": {
+                    "pistolas": 4,
+                    "descripcion": "Este dispensario cuenta con Magna y Diesel.",
+                    "tipos": ["magna", "premium"]
                 }
-            ]
-        }
-    ]
+            }
+        ]
+    }]
 }
